@@ -1,0 +1,20 @@
+# Python    (python compiled files)
+__pycache__/
+*.pyc
+
+# Virtual env (virtual environment folder)
+venv/
+.env/
+
+# Data  (data folders)
+data/raw/
+data/processed/
+
+# Models (trained heavy models)
+models/
+
+# Jupyter (auto saved checkpoints from jupyter notebook)
+.ipynb_checkpoints/
+
+# OS files (os specific folder)
+.DS_Store
