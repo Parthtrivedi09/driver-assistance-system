@@ -20,3 +20,25 @@ This project builds a real-time driver assistance system that detects road signs
 - Distance estimation
 - Voice alerts
 - Integration with GPS
+
+
+## 📊 Project Progress
+- [x] Project setup 
+- [ ] YOLO detection
+- [ ] Custom training
+- [ ] Real-time system
+- [ ] Driver alerts
+
+
+# annotation file 
+What annotation file looks like:
+
+Example:
+
+00000.ppm;774;411;815;446;11
+🧠 Meaning:
+Field	Meaning
+filename	image name
+x1, y1	top-left corner
+x2, y2	bottom-right
+class	sign type
