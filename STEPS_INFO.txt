@@ -1,0 +1,40 @@
+Annotation files  (INSIDE gt.txt)
+    What annotation file looks like:
+
+    Example:
+
+    00000.ppm;774;411;815;446;11
+    🧠 Meaning:
+    Field	Meaning
+    filename	image name
+    x1, y1	top-left corner
+    x2, y2	bottom-right
+    class	sign type
+
+
+1. convert GTSDB to YOLO format (Something which YOLO understands)
+    YOLO format looks like 
+        For each image
+
+            class_id center_x centr_y width height (This is what YOLO wants)
+
+            All value normalized to 0 to 1
+
+            How we will convert?
+                CENTER COORDINATES
+                    center_x = (x1 + x2) / 2 / image_width
+                    center_y = (y1 + y2) / 2 / image_height
+
+
+    After this raw data got transformed to YOLO-compatible training format
+
+2. After converting the images to the proper YOLO format with separately having the labels in text folder
+   so now we will split the data into validation and training data
+   
+
+3. YOLO CONFIG (data.yaml)
+    YOLO needs a config file to understand
+        Where your data is
+        What classes exist
+    Think of it as -> Instruction file for the model
+    
