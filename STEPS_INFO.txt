@@ -7,8 +7,8 @@ Annotation files  (INSIDE gt.txt)
     🧠 Meaning:
     Field	Meaning
     filename	image name
-    x1, y1	top-left corner
-    x2, y2	bottom-right
+    x1, y1	top-left corner of the bounding box
+    x2, y2	bottom-right of the bounding box
     class	sign type
 
 
@@ -32,9 +32,104 @@ Annotation files  (INSIDE gt.txt)
    so now we will split the data into validation and training data
    
 
-3. YOLO CONFIG (data.yaml)
+3. YOLO CONFIG (data.yaml) (YAML- Key-Value Pairs: Represented as key: value)
     YOLO needs a config file to understand
         Where your data is
         What classes exist
     Think of it as -> Instruction file for the model
+
+    Basically it consists of key value pair
     
+4. Training an object detection model using transfer learning (FINE TUNING)
+        YOLO already knows general objects you teach it WHAT A TRAFFIC SIGN IS?
+            #here we are fine tuning a pretrained YOLO model on a custom traffic dataset
+            #basically the model already knows about car people etc we are simply using transfer learning (FINE TUNING) to use that pre trained model
+            from ultralytics import YOLO
+
+            def train_model():
+                model = YOLO("yolov8n.pt")
+
+                model.train(
+                    data="data/processed/data.yaml", # this is the configuration file where we have mentioned every location and key value pairs
+                    epochs=20,
+                    imgsz=640,
+                    batch=8
+                )
+
+            if __name__ == "__main__":
+                train_model()
+
+
+
+
+-> HOW YOLO IS WORKING??
+     1. YOLO converts the image into a grid each grid cell is responsible for detecting object inside it\
+
+     2. For each cell YOLO predicts (x,y,w,h) + class + confidence
+
+     3. From gt.txt consisting of the true label and true bounding box sizes 
+        new YOLO compares the prediction with the actual box and class
+        and finds the error
+         there are majorly 3 different errors
+            1. BOX LOSS “How far is predicted box from actual box?”
+            2. CLS LOSS “Did I predict the correct class?”
+            3. DFL LOSS “How precise is the box boundary?”
+
+     4. How model learns??
+            Predict
+            Compare with ground truth
+            Calculate total loss
+            Backpropagation
+            Update weights
+    EVERY SINGLE STEP OF YOLO
+        YOLO PIPELINE (ONE-LINERS)
+            Input image → pass through CNN backbone → extract features
+            Features → processed at multiple scales (neck)
+            Model predicts many bounding boxes + class probabilities (head)
+            Filter low-confidence predictions
+            Apply Non-Max Suppression to remove duplicate boxes
+            Compare predictions with ground truth (gt.txt)
+            Compute losses (box + class + dfl)
+            Backpropagate error to update weights
+            Repeat over batches and epochs → improve predictions
+
+
+
+
+
+5. So our pretrained YOLO model has started training and the parameter looks something like this
+        Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+       1/20         0G      1.557      6.573       1.11         25        640: 0% ──────
+       1/20         0G      1.825      6.647      1.182         32        640: 2% ──────
+       1/20         0G      1.779      6.601      1.141         25        640: 4% ──────
+       1/20         0G      1.856      6.939      1.162         24        640: 6% ╸─────
+       1/20         0G      2.008      7.279      1.176         22        640: 8% ╸─────
+       1/20         0G      1.909      7.146      1.152         29        640: 10% ━────
+    Epoch we all know
+    GPU_mem 0G (Training on CPU and not on GPU)
+    Box_loss How wrong the model is drawing bounding boxes 
+            Actual box = where sign is
+            Predicted box = where model thinks
+            Difference = box_loss
+        This box_loss should decrease over time
+    cls_loss -> how wrong the model is classifying the object
+    dfl_loss -> Fine adjustment of bounding box accuracy
+    INSTANCES -> number of objects(traffic sign) in that batch
+    size -> 640 input image size
+
+        Take batch of images
+                Predict:
+                Bounding boxes
+                Classes
+                Compare with actual labels
+                Calculate losses
+                Adjust weights
+
+
+
+
+6. YOLO model training complete!!
+    “My model showed good convergence with decreasing training and validation losses,
+     but recall was low indicating missed detections, likely due to small object size 
+     and limited dataset. I planned improvements using higher resolution, more epochs,
+     and augmentation.”
