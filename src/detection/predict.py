@@ -5,7 +5,7 @@ import cv2
 model = YOLO("runs/detect/train/weights/best.pt")
 
 # Load test image
-image_path = r"data/processed/images/train/00480.jpg"  
+image_path = r"C:\Users\Parth Trivedi\Desktop\CODING\Deep Learning\driver-assistance-system\input.jpg"  
 
 image = cv2.imread(image_path)
 
