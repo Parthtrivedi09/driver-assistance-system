@@ -133,3 +133,22 @@ Annotation files  (INSIDE gt.txt)
      but recall was low indicating missed detections, likely due to small object size 
      and limited dataset. I planned improvements using higher resolution, more epochs,
      and augmentation.”
+
+
+7. VIDEO processing part done 
+
+8. Camera / Video Feed
+        ↓
+Frame Capture
+        ↓
+YOLO Detection
+        ↓
+Filter Only STOP Sign
+        ↓
+Confidence Check
+        ↓
+Temporal Validation
+        ↓
+Trigger Alert
+        ↓
+Voice / Warning Display

@@ -42,3 +42,21 @@ filename	image name
 x1, y1	top-left corner
 x2, y2	bottom-right
 class	sign type
+
+
+Mid pipeline 
+Camera / Video Feed
+        ↓
+Frame Capture
+        ↓
+YOLO Detection
+        ↓
+Filter Only STOP Sign
+        ↓
+Confidence Check
+        ↓
+Temporal Validation
+        ↓
+Trigger Alert
+        ↓
+Voice / Warning Display
