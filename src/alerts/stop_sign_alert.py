@@ -30,7 +30,7 @@ def speak_warning():
 # =========================
 # CONSTANTS
 # =========================
-CONF_THRESHOLD = 0.30
+CONF_THRESHOLD = 0.50
 
 # Need 3 consecutive frames
 FRAME_CONFIRMATION = 3
